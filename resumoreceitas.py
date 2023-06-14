@@ -1,8 +1,8 @@
 import sqlite3
+from datetime import datetime
 
 
 def resumo_receitas_despesas_mes():
-    from datetime import datetime
 
     bancodedados = sqlite3.connect("bancodell.db")
     cursor = bancodedados.cursor()
@@ -12,19 +12,15 @@ def resumo_receitas_despesas_mes():
     ano_atual = datetime.now().year
 
     # Obtém o total de receitas do mês atual
-    cursor.execute(
-        "SELECT SUM(valor) FROM transacoes WHERE strftime('%m', data) = ? AND strftime('%Y', data) = ? AND tipo_transacao = 'C'",
-        (mes_atual, ano_atual),
-    )
+    cursor.execute(f"SELECT SUM(valor) FROM transacoes WHERE data LIKE '%/%{mes_atual}/{ano_atual}' AND tipo_transacao = 'credito'")
+
     total_receitas = cursor.fetchone()[0]
     if total_receitas is None:
         total_receitas = 0
 
     # Obtém o total de despesas do mês atual
-    cursor.execute(
-        "SELECT SUM(valor) FROM transacoes WHERE strftime('%m', data) = ? AND strftime('%Y', data) = ? AND tipo_transacao = 'D'",
-        (mes_atual, ano_atual),
-    )
+    cursor.execute(f"SELECT SUM(valor) FROM transacoes WHERE data LIKE '%/%{mes_atual}/{ano_atual}' AND tipo_transacao = 'debito'")
+    
     total_despesas = cursor.fetchone()[0]
     if total_despesas is None:
         total_despesas = 0

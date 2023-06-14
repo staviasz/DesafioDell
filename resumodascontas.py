@@ -13,8 +13,8 @@ def resumo_das_contas():
 
     print("Resumo das Contas:")
     for conta in contas:
-        conta_id = conta[0]
-        conta_nome = conta[1]
+        id = conta[0]
+        conta_id = conta[1]
 
         # Calcula o saldo da conta
         cursor.execute(
@@ -24,7 +24,7 @@ def resumo_das_contas():
         if saldo is None:
             saldo = 0
 
-        print(f"Conta: {conta_nome} - Saldo: R${saldo:.2f}")
+        print(f"Conta: {conta_id} - Saldo: R${saldo:.2f}")
         saldo_total += saldo
 
     print(f"Saldo Total: R${saldo_total:.2f}")
